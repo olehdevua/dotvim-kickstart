@@ -798,9 +798,7 @@ function M.nvim_tree_config()
     dependencies = {
       {
         'https://github.com/nvim-tree/nvim-web-devicons',
-        opts = {
-          color_icons = true,
-        },
+        opts = { color_icons = true },
       },
     },
     config = function()
@@ -809,30 +807,20 @@ function M.nvim_tree_config()
         on_attach = function(bufnr)
           local api = require 'nvim-tree.api'
 
-          local function opts(desc)
-            return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-          end
-
           -- default mappings
           api.config.mappings.default_on_attach(bufnr)
 
           -- custom mappings
-          vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent, opts 'Up')
-          vim.keymap.set('n', '?', api.tree.toggle_help, opts 'Help')
-          vim.keymap.set('n', '<Leader>ff', api.tree.find_file, opts 'Help')
+          local keymap_options = { buffer = bufnr, noremap = true, silent = true, nowait = true }
+
+          vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent, keymap_options)
+          vim.keymap.set('n', '?', api.tree.toggle_help, keymap_options)
         end,
-        view = {
-          width = 50,
-          side = 'right',
-        },
+        view = { width = 50, side = 'right' },
         actions = {
-          open_file = {
-            quit_on_open = true,
-          },
+          open_file = { quit_on_open = true },
         },
         filesystem_watchers = { -- from default
-          enable = true,
-          debounce_delay = 50,
           ignore_dirs = {
             -- '/build',
             '/node_modules',
@@ -841,14 +829,17 @@ function M.nvim_tree_config()
         },
         renderer = {
           icons = {
-            glyphs = {
-              git = {
-                unstaged = '🚫',
-              },
-            },
+            glyphs = { git = { unstaged = '🚫' } },
           },
         },
       }
+
+      -- local api = require 'nvim-tree.api'
+      -- vim.keymap.set('n', '<leader>ff', api.tree.find_file, {
+      --   desc = '[F]ind file',
+      --   noremap = true,
+      -- })
+      vim.keymap.set('n', '<leader>ff', ':NvimTreeFindFile<CR>', { desc = '[F]ind file', noremap = true })
     end,
   }
 end

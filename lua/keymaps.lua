@@ -117,7 +117,7 @@ vim.api.nvim_set_keymap('n', '<S-Right>', ':vertical resize -3<CR>', { noremap =
 -- nnoremap <C-c><C-p> :echom expand("%:p") . ':' . line(".") <CR>
 --
 --nnoremap <leader>cp :let @+=expand("%:p") . ':' . line(".") <CR>
-vim.api.nvim_set_keymap('n', '<leader>cp', ':let @+=expand("%:p") . ":" . line(".")<cr>', { noremap = true, desc = 'Copy file path' })
+vim.api.nvim_set_keymap('n', '<leader>fp', ':let @+=expand("%:p") . ":" . line(".")<cr>', { noremap = true, desc = 'Copy file path' })
 --  ^-- `+` is the name of register
 
 --  commented it because it prevent CTRL-I to work
