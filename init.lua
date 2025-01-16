@@ -31,7 +31,11 @@ require('lazy').setup({
   plugin_configs.nvim_lsp_config(),
   plugin_configs.conform_config(),
   plugin_configs.nvim_cmp_config(),
-  plugin_configs.tokyonight_config(),
+
+  plugin_configs.outline_config(),
+
+  -- plugin_configs.tokyonight_config(),
+  plugin_configs.tokyodark_config(),
 
   plugin_configs.todo_comments_config(),
 

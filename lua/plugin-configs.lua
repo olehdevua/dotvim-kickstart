@@ -702,6 +702,23 @@ function M.tokyonight_config()
   }
 end
 
+function M.tokyodark_config()
+  return {
+    'https://github.com/tiagovla/tokyodark.nvim',
+    priority = 1000, -- Make sure to load this before all the other start plugins.
+    config = function()
+      require('tokyodark').setup {}
+
+      vim.cmd.colorscheme 'tokyodark'
+      -- You can configure highlights by doing something like:
+      vim.cmd.hi 'Comment gui=none'
+
+      -- vim.cmd 'hi CursorLine cterm=NONE ctermbg=234' -- color like in tmux -- old shl9pa 😬
+      vim.api.nvim_set_hl(0, 'Folded', { fg = '#777777' })
+    end,
+  }
+end
+
 --
 -- Highlight todo, notes, etc in comments
 --
@@ -937,6 +954,30 @@ function M.nvim_lint_config()
         })
       end,
     },
+  }
+end
+
+function M.outline_config()
+  return {
+    'https://github.com/hedyhli/outline.nvim',
+    config = function()
+      -- Example mapping to toggle outline
+      vim.keymap.set('n', '<leader>co', '<cmd>Outline<CR>', { desc = 'Toggle [C]ode Outline' })
+
+      require('outline').setup {
+        outline_window = {
+          width = 40,
+          auto_close = true,
+        },
+        preview_window = {
+          width = 55,
+          height = 80,
+        },
+        keymaps = {
+          goto_and_close = '<S-Cr>',
+        },
+      }
+    end,
   }
 end
 

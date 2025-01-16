@@ -55,7 +55,6 @@ vim.opt.expandtab = true -- transformation tab into spaces
 vim.opt.wrap = false
 
 vim.o.cursorline = true
-vim.cmd 'hi CursorLine cterm=NONE ctermbg=234' -- color like in tmux
 
 -- highlight <word> when you do ':%s/<word>/..'
 vim.opt.inccommand = 'nosplit' -- nosplit is default (can be 'split')
