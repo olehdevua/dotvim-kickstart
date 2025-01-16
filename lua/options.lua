@@ -72,8 +72,8 @@ vim.opt.backspace = 'indent,eol,start'
 -- set nofoldenable
 vim.opt.foldmethod = 'indent'
 --
--- fold everything below layer 2
-vim.opt.foldlevelstart = 2
+-- fold everything below layer 3
+vim.opt.foldlevelstart = 3
 --
 vim.cmd 'hi Folded ctermbg=230'
 
