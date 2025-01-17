@@ -38,6 +38,7 @@ require('lazy').setup({
   plugin_configs.tokyodark_config(),
 
   plugin_configs.todo_comments_config(),
+  plugin_configs.ufo_config(),
 
   plugin_configs.mini_config(),
   plugin_configs.nvim_treesitter_config(),

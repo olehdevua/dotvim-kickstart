@@ -60,21 +60,10 @@ vim.o.cursorline = true
 vim.opt.inccommand = 'nosplit' -- nosplit is default (can be 'split')
 
 vim.opt.ruler = true -- Show row and column ruler information
-vim.opt.showtabline = 2 -- Show tab bar
+vim.opt.showtabline = 1 -- Show tab bar
 vim.opt.undolevels = 256 -- Number of undo levels
 -- Backspace behaviour
 vim.opt.backspace = 'indent,eol,start'
-
--- by default `foldlevel` is 0, that is everything is
--- folded, so you can to disable it initially
---
--- set nofoldenable
-vim.opt.foldmethod = 'indent'
---
--- fold everything below layer 3
-vim.opt.foldlevelstart = 3
---
-vim.cmd 'hi Folded ctermbg=230'
 
 vim.opt.mouse = 'a'
 
@@ -127,7 +116,7 @@ vim.opt.timeoutlen = 400
 
 -- " set signcolumn=auto:2 " or number ?
 -- v-- or number ?
-vim.opt.signcolumn = 'yes:2'
+vim.opt.signcolumn = 'auto:2'
 -- vim.opt.signcolumn = 'yes' -- kickstart
 
 --" give more space for displaying messages
