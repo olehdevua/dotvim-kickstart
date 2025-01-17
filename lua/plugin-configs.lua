@@ -871,7 +871,23 @@ function M.indent_blankline_config()
       -- Enable `lukas-reineke/indent-blankline.nvim`
       -- See `:help ibl`
       main = 'ibl',
-      opts = {},
+      config = function()
+        local highlight = { 'Grey', 'RainbowCyan', 'RainbowOrange', 'RainbowYellow', 'Grey' }
+
+        local hooks = require 'ibl.hooks'
+        -- create the highlight groups in the highlight setup hook,
+        -- so they are reset every time the colorscheme changes
+        -- NOTE: mine: you need setup those "highlight groups" (like RainbowCyan), because looks like it custom
+        hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+          vim.api.nvim_set_hl(0, 'RainbowCyan', { fg = '#003D46' })
+          vim.api.nvim_set_hl(0, 'RainbowYellow', { fg = '#544D00' })
+          vim.api.nvim_set_hl(0, 'RainbowOrange', { fg = '#473901' })
+        end)
+
+        require('ibl').setup {
+          indent = { highlight = highlight, char = '▏' },
+        }
+      end,
     },
   }
 end
@@ -957,13 +973,15 @@ function M.nvim_lint_config()
   }
 end
 
+--
+-- /home/oleh-deb-wl/.local/share/nvim/lazy/outline.nvim/doc/outline.txt:332
+-- NOTE: `nvim` can't understand "file line num" for `txt` files
+--
 function M.outline_config()
   return {
     'https://github.com/hedyhli/outline.nvim',
     config = function()
       -- Example mapping to toggle outline
-      vim.keymap.set('n', '<leader>co', '<cmd>Outline<CR>', { desc = 'Toggle [C]ode Outline' })
-
       require('outline').setup {
         outline_window = {
           width = 40,
@@ -977,6 +995,8 @@ function M.outline_config()
           goto_and_close = '<S-Cr>',
         },
       }
+
+      vim.keymap.set('n', '<leader>co', '<cmd>Outline<CR>', { desc = 'Toggle [C]ode Outline' })
     end,
   }
 end
