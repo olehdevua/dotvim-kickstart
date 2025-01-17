@@ -758,8 +758,13 @@ function M.mini_config()
         return '%2l:%-2v'
       end
 
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
+      -- mine:
+      --/home/oleh-deb-wl/.local/share/nvim/lazy/mini.nvim/lua/mini/statusline.lua:541 #H.create_default_hl
+      -- Found hl group defined by plugin, and redefined fg color
+      vim.api.nvim_set_hl(0, 'MiniStatuslineFilename', { fg = '#689633' })
+      vim.api.nvim_set_hl(0, 'MiniStatuslineModeNormal', { bg = '#2C589B' })
+      vim.api.nvim_set_hl(0, 'MiniStatuslineModeInsert', { bg = '#4F7750' })
+      vim.api.nvim_set_hl(0, 'MiniStatuslineModeVisual', { bg = '#8E3396' })
     end,
   }
 end
