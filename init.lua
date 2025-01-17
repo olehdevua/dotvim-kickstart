@@ -42,6 +42,7 @@ require('lazy').setup({
 
   plugin_configs.mini_config(),
   plugin_configs.nvim_treesitter_config(),
+  plugin_configs.nvim_treesitter_context_config(),
 
   plugin_configs.nvim_tree_config(),
   plugin_configs.indent_blankline_config(),

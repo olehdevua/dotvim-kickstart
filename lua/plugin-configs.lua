@@ -703,6 +703,7 @@ function M.tokyodark_config()
       vim.cmd.hi 'Comment gui=none'
 
       -- vim.cmd 'hi CursorLine cterm=NONE ctermbg=234' -- color like in tmux -- old shl9pa 😬
+      vim.api.nvim_set_hl(0, 'Normal', { bg = '#000000', fg = '#fffcfa' })
       vim.api.nvim_set_hl(0, 'Folded', { fg = '#777777' })
     end,
   }
@@ -770,7 +771,28 @@ function M.nvim_treesitter_config()
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'json',
+        'yaml',
+        'toml',
+        'typescript',
+        'javascript',
+        'rust',
+        'go',
+        'python',
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'css',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -791,8 +813,22 @@ function M.nvim_treesitter_config()
   }
 end
 
+function M.nvim_treesitter_context_config()
+  return {
+    'https://github.com/nvim-treesitter/nvim-treesitter-context',
+    opts = {
+      separator = '-',
+      max_lines = 3,
+      trim_scope = 'inner',
+    },
+  }
+end
+
 --
 -- :help nvim-tree-mappings-default
+-- each of default options are documented in `:help nvim-tree.OPTION_NAME`
+-- nested options are documented by accessing them with `.` (eg: `:help nvim-tree.view.mappings.list`).
+-- default options /home/$USER/.local/share/nvim/lazy/nvim-tree.lua/lua/nvim-tree.lua:240
 --
 function M.nvim_tree_config()
   return {
@@ -808,7 +844,6 @@ function M.nvim_tree_config()
       },
     },
     config = function()
-      -- default options /home/$USER/.local/share/nvim/lazy/nvim-tree.lua/lua/nvim-tree.lua:240
       require('nvim-tree').setup {
         on_attach = function(bufnr)
           local api = require 'nvim-tree.api'
