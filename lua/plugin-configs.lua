@@ -292,6 +292,15 @@ end
 -- Main LSP Configuration
 --
 function M.nvim_lsp_config()
+  vim.filetype.add {
+    filename = {
+      ['docker-compose.yml'] = 'yaml.docker-compose',
+      ['docker-compose.yaml'] = 'yaml.docker-compose',
+      ['compose.yml'] = 'yaml.docker-compose',
+      ['compose.yaml'] = 'yaml.docker-compose',
+    },
+  }
+
   return {
     'https://github.com/neovim/nvim-lspconfig',
     dependencies = {
@@ -310,11 +319,7 @@ function M.nvim_lsp_config()
       'https://github.com/hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
-      -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-      -- and elegantly composed help section, `:help lsp-vs-treesitter`
+      -- `:help lsp-vs-treesitter`
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
@@ -450,7 +455,13 @@ function M.nvim_lsp_config()
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
-        docker_compose_language_service = {},
+        docker_compose_language_service = {
+          -- -- local util = require("lspconfig.util")
+          -- cmd = { 'docker-compose-langserver', '--stdio' },
+          -- filetypes = { 'yaml.docker-compose', 'docker-compose.yaml', 'docker-compose.yml' },
+          -- root_dir = util.root_pattern('docker-compose.yaml', 'docker-compose.yml', 'compose.yaml', 'compose.yml'),
+          -- single_file_support = true,
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -818,6 +829,9 @@ function M.nvim_treesitter_config()
   }
 end
 
+--
+-- Sticky lines on Jetbrains IDE
+--
 function M.nvim_treesitter_context_config()
   return {
     'https://github.com/nvim-treesitter/nvim-treesitter-context',
