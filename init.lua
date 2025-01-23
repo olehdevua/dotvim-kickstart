@@ -36,6 +36,7 @@ require('lazy').setup({
 
   -- plugin_configs.tokyonight_config(),
   plugin_configs.tokyodark_config(),
+  -- plugin_configs.catppuchin_config(),
 
   plugin_configs.todo_comments_config(),
   plugin_configs.ufo_config(),
