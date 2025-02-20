@@ -716,6 +716,7 @@ function M.tokyodark_config()
       -- vim.cmd 'hi CursorLine cterm=NONE ctermbg=234' -- color like in tmux -- old shl9pa 😬
       vim.api.nvim_set_hl(0, 'Normal', { bg = '#000000', fg = '#fffcfa' })
       vim.api.nvim_set_hl(0, 'Folded', { fg = '#777777' })
+      vim.api.nvim_set_hl(0, 'Comment', { fg = '#999999' })
     end,
   }
 end

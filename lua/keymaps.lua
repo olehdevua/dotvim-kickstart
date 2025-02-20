@@ -53,9 +53,9 @@ vim.api.nvim_set_keymap('i', 'jf', '<Esc>l', { noremap = true })
 -- nnoremap <leader>qq :q! <CR>
 vim.api.nvim_set_keymap('n', '<leader>qa', ':qall!<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>qq', ':q!<CR>', { noremap = true })
--- nnoremap <C-b> :bp<CR>
--- nnoremap <C-b> :e#<CR> " behavior of C-^
-vim.api.nvim_set_keymap('n', '<C-b>', ':e#<CR>', { noremap = true })
+-- nnoremap <C-p> :bp<CR>
+-- nnoremap <C-p> :e#<CR> " behavior of C-^
+vim.api.nvim_set_keymap('n', '<C-p>', ':e#<CR>', { noremap = true })
 
 -- vnoremap < <gv
 -- vnoremap > >gv
