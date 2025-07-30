@@ -94,7 +94,7 @@ end
 -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 --
 function M.which_key_config()
-  return { -- Useful plugin to show you pending keybinds.
+  return {              -- Useful plugin to show you pending keybinds.
     'https://github.com/folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -140,7 +140,7 @@ function M.which_key_config()
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
+        { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
@@ -185,7 +185,7 @@ function M.telescope_config()
       { 'https://github.com/nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'https://github.com/nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'https://github.com/nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -307,9 +307,13 @@ function M.nvim_lsp_config()
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { 'https://github.com/williamboman/mason.nvim', opts = {} },
+      {
+        'https://github.com/williamboman/mason.nvim',
+        opts = {
+          ensure_installed = { 'stylua' },
+        }
+      },
       'https://github.com/williamboman/mason-lspconfig.nvim',
-      'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -480,25 +484,18 @@ function M.nvim_lsp_config()
       }
 
       -- Ensure the servers and tools above are installed
-      --
-      -- To check the current status of installed tools and/or manually install
-      -- other tools, you can run
-      --    :Mason
-      --
-      -- You can press `g?` for help in this menu.
+      -- You can press `g?` for help in ":Mason" menu.
       --
       -- `mason` had to be setup earlier: to configure its options see the
       -- `dependencies` table for `nvim-lspconfig` above.
       --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-      })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
       require('mason-lspconfig').setup {
+        -- Get the list of servers from the `servers` table and add any other tools you want to install
+        --ensure_installed = vim.list_extend(vim.tbl_keys(servers or {}), { 'stylua' }),
+        ensure_installed = vim.tbl_keys(servers or {}),
+        automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -630,7 +627,8 @@ function M.nvim_cmp_config()
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          -- ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<Tab>'] = cmp.mapping.confirm { select = true },
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
@@ -1094,7 +1092,7 @@ function M.ufo_config()
       -- vim.cmd 'hi Folded ctermbg=230'
 
       vim.opt.foldcolumn = 'auto:9' -- '0' is not bad
-      vim.opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+      vim.opt.foldlevel = 99        -- Using ufo provider need a large value, feel free to decrease the value
       vim.opt.foldlevelstart = 99
       vim.opt.foldenable = true
       vim.opt.fillchars = [[foldopen:,foldclose:]]
