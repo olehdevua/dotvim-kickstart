@@ -13,16 +13,16 @@ vim.opt.termguicolors = true -- set term gui colors (most terminals support this
 
 vim.opt.title = true
 vim.opt.showcmd = true
-vim.opt.number = true -- also vim.opt.relativenumber
-vim.opt.autoread = true -- For auto update files
+vim.opt.number = true     -- also vim.opt.relativenumber
+vim.opt.autoread = true   -- For auto update files
 vim.opt.wildmenu = true
-vim.opt.showmatch = true -- highlight matching brace  (set sm)
-vim.opt.smartcase = true -- smart-case search
+vim.opt.showmatch = true  -- highlight matching brace  (set sm)
+vim.opt.smartcase = true  -- smart-case search
 vim.opt.ignorecase = true -- ignore registre while searching (set ic)
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
-vim.opt.showmode = false -- don't show the mode, since it's already in the status line
+vim.opt.showmode = false  -- don't show the mode, since it's already in the status line
 
 vim.opt.splitbelow = true -- force all horizontal splits to go below current window
 vim.opt.splitright = true -- force all vertical splits to go to the right of current window
@@ -59,9 +59,9 @@ vim.o.cursorline = true
 -- highlight <word> when you do ':%s/<word>/..'
 vim.opt.inccommand = 'nosplit' -- nosplit is default (can be 'split')
 
-vim.opt.ruler = true -- Show row and column ruler information
-vim.opt.showtabline = 1 -- Show tab bar
-vim.opt.undolevels = 256 -- Number of undo levels
+vim.opt.ruler = true           -- Show row and column ruler information
+vim.opt.showtabline = 1        -- Show tab bar
+vim.opt.undolevels = 256       -- Number of undo levels
 -- Backspace behaviour
 vim.opt.backspace = 'indent,eol,start'
 
@@ -80,7 +80,8 @@ vim.opt.lazyredraw = true -- to avoid scrolling problems
 -- :help 'list' and :help 'listchars'
 vim.opt.list = true
 -- vim.o.listchars = "tab:·\ " -- mine
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' } -- kickstart
+-- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' } -- kickstart
+vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' } -- kickstart
 
 vim.opt.scrolloff = 14
 vim.opt.scrolljump = 14
