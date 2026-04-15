@@ -42,7 +42,8 @@ end)
 -- "set formatoptions-=cro " stop newline continution of comments (for now have no clue what does it means)
 -- vim.o.clipboard = 'unnamedplus'
 
-vim.opt.pumheight = 13 -- height of popup menu
+vim.opt.pumheight = 13        -- height of popup menu
+vim.opt.winborder = 'rounded' -- default border for floating windows (0.12+)
 
 -- " https://habr.com/ru/post/64224/
 vim.opt.autoindent = true
@@ -75,7 +76,6 @@ vim.opt.mouse = 'a'
 
 -- Performance
 vim.opt.synmaxcol = 512
-vim.opt.lazyredraw = true -- to avoid scrolling problems
 
 -- :help 'list' and :help 'listchars'
 vim.opt.list = true
