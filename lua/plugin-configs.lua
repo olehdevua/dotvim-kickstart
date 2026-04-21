@@ -357,7 +357,9 @@ function M.nvim_lsp_config()
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          --  Rebinds 0.12's default `grt` (native qf UX) to the telescope picker,
+          --  matching how `grr`/`gd`/`gI` above are also routed through telescope.
+          map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype definition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
@@ -1041,67 +1043,6 @@ function M.outline_config()
       }
 
       vim.keymap.set('n', '<leader>co', '<cmd>Outline<CR>', { desc = 'Toggle [C]ode Outline' })
-    end,
-  }
-end
-
-function M.ufo_config()
-  return {
-    'https://github.com/kevinhwang91/nvim-ufo',
-    dependencies = { 'kevinhwang91/promise-async' },
-    config = function()
-      -- NOTE: old one
-      --
-      -- by default `foldlevel` is 0, that is everything is
-      -- folded, so you can to disable it initially
-      --
-      -- set nofoldenable
-      -- vim.opt.foldmethod = 'indent'
-      --
-      -- fold everything below layer 4
-      -- vim.opt.foldlevelstart = 4
-      --
-      -- vim.cmd 'hi Folded ctermbg=230'
-
-      vim.opt.foldcolumn = 'auto:9' -- '0' is not bad
-      vim.opt.foldlevel = 99        -- Using ufo provider need a large value, feel free to decrease the value
-      vim.opt.foldlevelstart = 99
-      vim.opt.foldenable = true
-      vim.opt.fillchars = [[foldopen:,foldclose:]]
-      -- vim.opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-
-      require('ufo').setup {
-        open_fold_hl_timeout = 200,
-        provider_selector = nil,
-        close_fold_kinds_for_ft = { default = {} },
-        fold_virt_text_handler = nil,
-        enable_get_fold_virt_text = false,
-        preview = {
-          win_config = {
-            border = 'rounded',
-            winblend = 12,
-            winhighlight = 'Normal:Normal',
-            maxheight = 20,
-          },
-          mappings = {
-            scrollB = '',
-            scrollF = '',
-            scrollU = '',
-            scrollD = '',
-            scrollE = '<C-E>',
-            scrollY = '<C-Y>',
-            jumpTop = '',
-            jumpBot = '',
-            close = 'q',
-            switch = '<Tab>',
-            trace = '<CR>',
-          },
-        },
-      }
-
-      -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-      vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-      vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
     end,
   }
 end

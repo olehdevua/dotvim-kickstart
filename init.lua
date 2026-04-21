@@ -40,7 +40,7 @@ require('lazy').setup({
   -- plugin_configs.catppuchin_config(),
 
   plugin_configs.todo_comments_config(),
-  plugin_configs.ufo_config(),
+  -- plugin_configs.ufo_config(), -- trialing builtin folding from 2026-04-21; uncomment to roll back
 
   plugin_configs.mini_config(),
   plugin_configs.nvim_treesitter_config(),

@@ -44,6 +44,20 @@ end)
 
 vim.opt.pumheight = 13        -- height of popup menu
 vim.opt.winborder = 'rounded' -- default border for floating windows (0.12+)
+vim.opt.pumborder = 'rounded' -- border for the completion popup (0.12+)
+vim.opt.pummaxwidth = 60      -- clamp long signatures/docs in the pum (0.12+)
+
+-- Folds (builtin, 0.12): treesitter-backed, all open by default.
+-- Replaces nvim-ufo. `foldtext = ''` renders the syntax-highlighted first
+-- line of the fold (0.10+), which is what ufo's custom handler was giving us.
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldtext = ''
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+vim.opt.foldcolumn = 'auto:1'
+vim.opt.fillchars:append { foldopen = '▾', foldclose = '▸', foldsep = ' ', fold = ' ' }
 
 -- " https://habr.com/ru/post/64224/
 vim.opt.autoindent = true
