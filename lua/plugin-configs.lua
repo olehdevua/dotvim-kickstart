@@ -431,83 +431,53 @@ function M.nvim_lsp_config()
         vim.diagnostic.config { signs = { text = diagnostic_signs } }
       end
 
-      -- LSP servers and clients are able to communicate to each other what features they support.
-      --  By default, Neovim doesn't support everything that is in the LSP specification.
-      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      -- LSP capabilities describe what the *client* (Neovim) supports. Neovim's builtin
+      -- defaults are conservative; nvim-cmp extends them (snippets, resolve, etc.), and
+      -- servers use this info to decide which features to offer us.
+      local capabilities = vim.tbl_deep_extend(
+        'force',
+        vim.lsp.protocol.make_client_capabilities(),
+        require('cmp_nvim_lsp').default_capabilities()
+      )
 
-      -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      --
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local servers = {
-        -- clangd = {},
-        gopls = {},
-        pyright = {},
-        rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-        docker_compose_language_service = {
-          -- -- local util = require("lspconfig.util")
-          -- cmd = { 'docker-compose-langserver', '--stdio' },
-          -- filetypes = { 'yaml.docker-compose', 'docker-compose.yaml', 'docker-compose.yml' },
-          -- root_dir = util.root_pattern('docker-compose.yaml', 'docker-compose.yml', 'compose.yaml', 'compose.yml'),
-          -- single_file_support = true,
-        },
+      -- `vim.lsp.config('*', ...)` registers defaults applied to every server, so each
+      -- server inherits our cmp-augmented capabilities without repeating them per-server.
+      -- See `:help vim.lsp.config()` (added in 0.11, expanded in 0.12).
+      vim.lsp.config('*', { capabilities = capabilities })
 
-        lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
-            },
+      -- Per-server overrides. Only servers that need non-default settings go here —
+      -- `gopls`, `pyright`, `rust_analyzer`, `docker_compose_language_service` use the
+      -- defaults shipped by nvim-lspconfig (under its `lsp/<name>.lua`) as-is.
+      -- Lua options reference: https://luals.github.io/wiki/settings/
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            -- 'Replace' makes function completions replace the call site instead of
+            -- inserting alongside the existing text (nicer UX than the default 'Both').
+            completion = { callSnippet = 'Replace' },
+            -- Uncomment to silence lua_ls's noisy `missing-fields` diagnostics:
+            -- diagnostics = { disable = { 'missing-fields' } },
           },
         },
+      })
+
+      -- Single source of truth for both mason install and `vim.lsp.enable`.
+      -- To add a server: install it via `:Mason`, add its name here, and (if it needs
+      -- overrides) add a `vim.lsp.config('<name>', {...})` block above.
+      local servers = { 'gopls', 'pyright', 'rust_analyzer', 'lua_ls', 'docker_compose_language_service' }
+
+      -- Mason owns *installation* only. We no longer pass `handlers = {...}` here —
+      -- that API is deprecated in mason-lspconfig v2. Server startup is now driven by
+      -- `vim.lsp.enable` below, which is the native Neovim 0.11+ entry point.
+      require('mason-lspconfig').setup {
+        ensure_installed = servers,
+        automatic_installation = true,
       }
 
-      -- Ensure the servers and tools above are installed
-      -- You can press `g?` for help in ":Mason" menu.
-      --
-      -- `mason` had to be setup earlier: to configure its options see the
-      -- `dependencies` table for `nvim-lspconfig` above.
-      --
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
-      require('mason-lspconfig').setup {
-        -- Get the list of servers from the `servers` table and add any other tools you want to install
-        --ensure_installed = vim.list_extend(vim.tbl_keys(servers or {}), { 'stylua' }),
-        ensure_installed = vim.tbl_keys(servers or {}),
-        automatic_installation = true,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      -- `vim.lsp.enable` wires each server's filetypes to an autocmd that starts the
+      -- client on matching buffers, using the merged config from `vim.lsp.config`.
+      -- Inspect live state with `:checkhealth vim.lsp` or the `:lsp` command (0.12).
+      vim.lsp.enable(servers)
     end,
   }
 end
