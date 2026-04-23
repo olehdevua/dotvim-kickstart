@@ -104,6 +104,7 @@ vim.api.nvim_set_keymap('n', '<S-Right>', ':vertical resize -3<CR>', { noremap =
 --
 --nnoremap <leader>cp :let @+=expand("%:p") . ':' . line(".") <CR>
 vim.api.nvim_set_keymap('n', '<leader>fp', ':let @+=expand("%:p") . ":" . line(".")<cr>', { noremap = true, desc = 'Copy file path' })
+vim.api.nvim_set_keymap('n', '<leader>fr', ':let @+=substitute(expand("%:p"), trim(system("git rev-parse --show-toplevel")) . "/", "", "") . ":" . line(".")<cr>', { noremap = true, desc = 'Copy relative file path' })
 --  ^-- `+` is the name of register
 
 --  commented it because it prevent CTRL-I to work
