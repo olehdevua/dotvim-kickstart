@@ -59,6 +59,25 @@ vim.opt.foldenable = true
 vim.opt.foldcolumn = 'auto:1'
 vim.opt.fillchars:append { foldopen = '▾', foldclose = '▸', foldsep = ' ', fold = ' ' }
 
+-- Register a `make-range!` directive compatible with Neovim 0.12's native
+-- query engine. nvim-treesitter ships a version of this directive, but its
+-- handler signature doesn't match what 0.12 calls, so `folds.scm` queries
+-- using `(#make-range! "fold" @fold)` raise "No handler for make-range!".
+-- This builds a single range spanning from the first matched node's start
+-- to the last matched node's end and sets it on the capture metadata,
+-- which `vim.treesitter.foldexpr()` then honors via `vim.treesitter.get_range`.
+vim.treesitter.query.add_directive('make-range!', function(match, _, _, pred, metadata)
+  local cap = pred[2]
+  local nodes = match[cap]
+  if not nodes then return end
+  if type(nodes) ~= 'table' then nodes = { nodes } end
+  if #nodes == 0 then return end
+  local sr, sc = nodes[1]:start()
+  local er, ec = nodes[#nodes]:end_()
+  metadata[cap] = metadata[cap] or {}
+  metadata[cap].range = { sr, sc, er, ec }
+end, { force = true, all = true })
+
 -- " https://habr.com/ru/post/64224/
 vim.opt.autoindent = true
 vim.opt.smartindent = true
